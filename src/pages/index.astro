@@ -4,20 +4,40 @@ import seed from "../../seed/seed.json";
 import PhotoFeed from "../components/PhotoFeed.astro";
 import Base from "../layouts/Base.astro";
 
-const { entries: photos, cacheHint } = await getEmDashCollection("photos", {
+const { entries: photos, cacheHint: photosCacheHint } = await getEmDashCollection("photos", {
   status: "published",
   limit: 100,
   orderBy: { sort_order: "asc" },
 });
-if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+if (Astro.cache?.enabled) Astro.cache.set(photosCacheHint);
+
+// `posts` is introduced after the original photo migration. A site that has
+// not created the collection yet continues to render its legacy photos.
+let posts: any[] = [];
+try {
+  const postsResult = await getEmDashCollection("posts", {
+    status: "published",
+    limit: 100,
+    orderBy: { sort_order: "asc" },
+  });
+  posts = postsResult.entries;
+  if (Astro.cache?.enabled) Astro.cache.set(postsResult.cacheHint);
+} catch {
+  posts = [];
+}
 
 // The public journal remains complete before its first CMS setup. Once the
 // setup wizard imports this same seed, live EmDash records take precedence.
-const feedPhotos = photos.length
+const legacyPhotos = photos.length
   ? photos
   : seed.content.photos.map((photo) => ({ data: photo.data, edit: {} }));
+
+const feedItems = [
+  ...legacyPhotos.map((photo) => ({ ...photo, kind: "photo" })),
+  ...posts.map((post) => ({ ...post, kind: "post" })),
+].sort((a, b) => (a.data.sort_order ?? 0) - (b.data.sort_order ?? 0));
 ---
 
-<Base title="Tech Tarik" description="A personal photo journal">
-  <PhotoFeed photos={feedPhotos} />
+<Base title="Tech Tarik" description="A personal journal">
+  <PhotoFeed photos={feedItems} />
 </Base>

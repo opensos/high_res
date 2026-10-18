@@ -8,7 +8,7 @@
   },
   "settings": {
     "title": "Tech Tarik",
-    "tagline": "A personal photo journal"
+    "tagline": "A personal journal"
   },
   "collections": [
     {
@@ -25,6 +25,21 @@
         { "slug": "date", "label": "Display date", "type": "string" },
         { "slug": "sort_order", "label": "Feed order", "type": "integer", "required": true },
         { "slug": "is_banner", "label": "Banner image", "type": "boolean" }
+      ]
+    },
+    {
+      "slug": "posts",
+      "label": "Posts",
+      "labelSingular": "Post",
+      "supports": ["drafts", "revisions", "preview", "scheduling"],
+      "fields": [
+        { "slug": "title", "label": "Title", "type": "string", "required": true },
+        { "slug": "image", "label": "High-resolution image", "type": "image" },
+        { "slug": "source_url", "label": "Image URL (optional)", "type": "url" },
+        { "slug": "alt", "label": "Alt text", "type": "string" },
+        { "slug": "body", "label": "Text", "type": "textarea", "rows": 10 },
+        { "slug": "date", "label": "Display date", "type": "string" },
+        { "slug": "sort_order", "label": "Feed order", "type": "integer", "required": true }
       ]
     }
   ],

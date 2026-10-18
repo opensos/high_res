@@ -14,13 +14,14 @@ const { photos } = Astro.props;
   {
     photos.map((photo) => {
       const edit = photo.edit ?? {};
+      const isPost = photo.kind === "post";
       const image = photo.data.image;
       const source = photo.data.source_url;
       const alt = photo.data.alt || photo.data.title || "";
-      const hasMeta = Boolean(photo.data.date || photo.data.caption);
+      const hasMeta = Boolean(photo.data.date || photo.data.caption || (isPost && photo.data.title) || photo.data.body);
       return (
         <template class="photo-template">
-          <article class="photo" data-photo-item>
+          <article class:list={{ photo: true, post: isPost }} data-photo-item>
             <div class:list={{ "photo-frame": true, banner: photo.data.is_banner }} {...edit.image}>
               {image ? (
                 <Image image={image} />
@@ -31,8 +32,10 @@ const { photos } = Astro.props;
             {
               hasMeta && (
                 <div class="photo-meta">
+                  {isPost && photo.data.title && <h2 {...edit.title}>{photo.data.title}</h2>}
                   {photo.data.date && <time {...edit.date}>{photo.data.date}</time>}
                   {photo.data.caption && <p {...edit.caption}>{photo.data.caption}</p>}
+                  {photo.data.body && <p class="post-body" {...edit.body}>{photo.data.body}</p>}
                 </div>
               )
             }
@@ -100,6 +103,9 @@ const { photos } = Astro.props;
   .photo-meta { display: grid; justify-items: center; gap: .3rem; margin-top: .7rem; text-align: center; font-size: .7rem; line-height: 1.35; }
   .photo-meta time { color: #9ca3af; }
   .photo-meta p { margin: 0; color: #6b7280; }
+  .post .photo-meta { width: min(100% - 2rem, 42rem); margin-inline: auto; justify-items: start; text-align: left; }
+  .post .photo-meta h2 { margin: 0; color: #202020; font-size: .85rem; font-weight: 500; }
+  .post .photo-meta .post-body { white-space: pre-wrap; color: #202020; font-size: .8rem; line-height: 1.7; }
   .feed-sentinel { min-height: 3rem; padding: 1.5rem 0; text-align: center; color: #9ca3af; font-size: .7rem; }
   @media (min-width: 720px) { .photo-feed { gap: 4.5rem; } }
   @media (prefers-reduced-motion: reduce) { .photo { transition: none; transform: none; } }
