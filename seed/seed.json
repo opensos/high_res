@@ -37,7 +37,7 @@
         { "slug": "image", "label": "High-resolution image", "type": "image" },
         { "slug": "source_url", "label": "Image URL (optional)", "type": "url" },
         { "slug": "alt", "label": "Alt text", "type": "string" },
-        { "slug": "body", "label": "Text", "type": "textarea", "rows": 10 },
+        { "slug": "body", "label": "Text", "type": "text", "widget": "textarea", "options": { "rows": 10 } },
         { "slug": "date", "label": "Display date", "type": "string" },
         { "slug": "sort_order", "label": "Feed order", "type": "integer", "required": true }
       ]
