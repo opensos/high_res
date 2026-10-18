@@ -1,0 +1,27 @@
+---
+import { getEmDashCollection } from "emdash";
+import PhotoFeed from "../components/PhotoFeed.astro";
+import Base from "../layouts/Base.astro";
+
+const { entries: photos, cacheHint } = await getEmDashCollection("photos", {
+  status: "published",
+  limit: 100,
+  orderBy: { sort_order: "asc" },
+});
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+---
+
+<Base title="Tech Tarik" description="A personal photo journal">
+  {
+    photos.length ? (
+      <PhotoFeed photos={photos} />
+    ) : (
+      <p class="empty-state">No photos yet. <a href="/_emdash/admin/content/photos/new">Add the first photo</a>.</p>
+    )
+  }
+</Base>
+
+<style>
+  .empty-state { text-align: center; color: #6b7280; font-size: .8rem; }
+  .empty-state a { color: inherit; }
+</style>

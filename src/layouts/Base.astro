@@ -1,0 +1,62 @@
+---
+import { getSiteSettingsWithCacheHint } from "emdash";
+import { EmDashBodyEnd, EmDashBodyStart, EmDashHead } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+
+interface Props {
+  title?: string;
+  description?: string | null;
+}
+
+const { title, description } = Astro.props;
+const settingsResult = await getSiteSettingsWithCacheHint();
+if (Astro.cache?.enabled) Astro.cache.set(settingsResult.cacheHint);
+
+const siteTitle = settingsResult.data.title || "Tech Tarik";
+const siteTagline = settingsResult.data.tagline || "A personal photo journal";
+const fullTitle = title && title !== siteTitle ? `${title} — ${siteTitle}` : siteTitle;
+const pageCtx = createPublicPageContext({
+  Astro,
+  kind: "custom",
+  pageType: "website",
+  title: fullTitle,
+  pageTitle: title || siteTitle,
+  description: description || siteTagline,
+  siteName: siteTitle,
+});
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+    <title>{fullTitle}</title>
+    <EmDashHead page={pageCtx} />
+  </head>
+  <body>
+    <EmDashBodyStart page={pageCtx} />
+    <main class="site-shell">
+      <header class="masthead">
+        <a href="/" aria-label={`${siteTitle} home`}>{siteTitle}</a>
+      </header>
+      <slot />
+    </main>
+    <EmDashBodyEnd page={pageCtx} />
+  </body>
+</html>
+
+<style is:global>
+  :root { font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: #202020; background: #fff; font-synthesis: none; }
+  * { box-sizing: border-box; }
+  html { min-width: 320px; }
+  body { margin: 0; background: #fff; }
+  .site-shell { width: min(100%, 1280px); margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+  .masthead { padding: 0 0 2.5rem; text-align: center; font-size: .75rem; letter-spacing: .01em; }
+  .masthead a { color: #6b7280; text-decoration: none; }
+  .masthead a:hover, .masthead a:focus-visible { color: #111827; text-decoration: underline; text-underline-offset: .2em; }
+  @media (min-width: 720px) { .site-shell { padding-inline: 2rem; } .masthead { padding-bottom: 3.5rem; } }
+</style>

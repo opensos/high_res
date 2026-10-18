@@ -1,0 +1,103 @@
+---
+import { Image } from "emdash/ui";
+
+interface Props {
+  photos: any[];
+}
+
+const { photos } = Astro.props;
+---
+
+<section aria-label="Photo feed">
+  <div id="photo-feed" class="photo-feed" aria-live="polite"></div>
+
+  {
+    photos.map((photo) => {
+      const image = photo.data.image;
+      const source = photo.data.source_url;
+      const alt = photo.data.alt || photo.data.title || "";
+      const hasMeta = Boolean(photo.data.date || photo.data.caption);
+      return (
+        <template class="photo-template">
+          <article class="photo" data-photo-item>
+            <div class:list={{ "photo-frame": true, banner: photo.data.is_banner }} {...photo.edit.image}>
+              {image ? (
+                <Image image={image} />
+              ) : source ? (
+                <img src={source} alt={alt} loading="lazy" decoding="async" sizes="(min-width: 1280px) 1200px, calc(100vw - 2rem)" />
+              ) : null}
+            </div>
+            {
+              hasMeta && (
+                <div class="photo-meta">
+                  {photo.data.date && <time {...photo.edit.date}>{photo.data.date}</time>}
+                  {photo.data.caption && <p {...photo.edit.caption}>{photo.data.caption}</p>}
+                </div>
+              )
+            }
+          </article>
+        </template>
+      );
+    })
+  }
+
+  <div id="feed-sentinel" class="feed-sentinel" aria-live="polite"></div>
+</section>
+
+<script>
+  const batchSize = 5;
+  const feed = document.querySelector<HTMLDivElement>("#photo-feed");
+  const sentinel = document.querySelector<HTMLDivElement>("#feed-sentinel");
+  const templates = Array.from(document.querySelectorAll<HTMLTemplateElement>(".photo-template"));
+  let cursor = 0;
+
+  const reveal = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          reveal.unobserve(entry.target);
+        }
+      }
+    },
+    { threshold: 0.05 },
+  );
+
+  function loadNextBatch() {
+    if (!feed || !sentinel || cursor >= templates.length) return;
+    sentinel.textContent = "loading…";
+    const batch = templates.slice(cursor, cursor + batchSize);
+    for (const template of batch) {
+      const fragment = template.content.cloneNode(true) as DocumentFragment;
+      const item = fragment.querySelector<HTMLElement>("[data-photo-item]");
+      if (item) reveal.observe(item);
+      feed.appendChild(fragment);
+    }
+    cursor += batch.length;
+    sentinel.textContent = cursor >= templates.length ? "© Tech Tarik" : "";
+    if (cursor >= templates.length) observer.disconnect();
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => entries.some((entry) => entry.isIntersecting) && loadNextBatch(),
+    { rootMargin: "240px" },
+  );
+
+  if (sentinel) observer.observe(sentinel);
+  loadNextBatch();
+</script>
+
+<style>
+  .photo-feed { display: grid; gap: 3rem; }
+  .photo { opacity: 0; transform: translateY(14px); transition: opacity .45s ease, transform .45s ease; }
+  .photo.is-visible { opacity: 1; transform: translateY(0); }
+  .photo-frame { display: flex; justify-content: center; }
+  .photo-frame :global(img) { display: block; width: auto; max-width: 100%; height: auto; max-height: 90svh; object-fit: contain; }
+  .photo-frame.banner :global(img) { width: min(100%, 720px); }
+  .photo-meta { display: grid; justify-items: center; gap: .3rem; margin-top: .7rem; text-align: center; font-size: .7rem; line-height: 1.35; }
+  .photo-meta time { color: #9ca3af; }
+  .photo-meta p { margin: 0; color: #6b7280; }
+  .feed-sentinel { min-height: 3rem; padding: 1.5rem 0; text-align: center; color: #9ca3af; font-size: .7rem; }
+  @media (min-width: 720px) { .photo-feed { gap: 4.5rem; } }
+  @media (prefers-reduced-motion: reduce) { .photo { transition: none; transform: none; } }
+</style>

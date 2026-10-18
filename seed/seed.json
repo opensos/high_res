@@ -1,0 +1,50 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "High Res",
+    "description": "A minimal, single-column photo feed migrated from tehtarik.",
+    "author": "OpenSOS"
+  },
+  "settings": {
+    "title": "Tech Tarik",
+    "tagline": "A personal photo journal"
+  },
+  "collections": [
+    {
+      "slug": "photos",
+      "label": "Photos",
+      "labelSingular": "Photo",
+      "supports": ["drafts", "revisions", "preview", "scheduling"],
+      "fields": [
+        { "slug": "title", "label": "Internal title", "type": "string", "required": true },
+        { "slug": "image", "label": "High-resolution image", "type": "image" },
+        { "slug": "source_url", "label": "Legacy image URL", "type": "url" },
+        { "slug": "alt", "label": "Alt text", "type": "string", "required": true },
+        { "slug": "caption", "label": "Caption", "type": "string" },
+        { "slug": "date", "label": "Display date", "type": "string" },
+        { "slug": "sort_order", "label": "Feed order", "type": "integer", "required": true },
+        { "slug": "is_banner", "label": "Banner image", "type": "boolean" }
+      ]
+    }
+  ],
+  "content": {
+    "photos": [
+      { "id": "free-palestine", "slug": "free-palestine", "status": "published", "data": { "title": "Free Palestine", "source_url": "/img/Free_Palestine.png", "alt": "Free Palestine", "sort_order": 1, "is_banner": true } },
+      { "id": "luna", "slug": "luna", "status": "published", "data": { "title": "Luna", "source_url": "/img/4490ef32-3257-4eaf-93d7-32693b87cfef.JPG", "alt": "Luna", "date": "17/5/2026", "sort_order": 2 } },
+      { "id": "kerusi-uniqlo", "slug": "kerusi-uniqlo", "status": "published", "data": { "title": "Kerusi Uniqlo", "source_url": "/img/IMG_2128.JPG", "alt": "Kerusi Uniqlo", "caption": "Kerusi Uniqlo", "date": "4/5/2026", "sort_order": 3 } },
+      { "id": "strobilanthes-dyerianus", "slug": "strobilanthes-dyerianus", "status": "published", "data": { "title": "Strobilanthes dyerianus", "source_url": "/img/IMG_3662.JPG", "alt": "Strobilanthes dyerianus", "caption": "Strobilanthes dyerianus", "date": "4/5/2026", "sort_order": 4 } },
+      { "id": "siamese-dream", "slug": "siamese-dream", "status": "published", "data": { "title": "Siamese Dream", "source_url": "/img/siam.jpeg", "alt": "Siamese Dream", "caption": "Siamese Dream", "sort_order": 5 } },
+      { "id": "jempol", "slug": "jempol", "status": "published", "data": { "title": "Jempol", "source_url": "/img/IMG_3274.jpeg", "alt": "Jempol", "caption": "jempol", "sort_order": 6 } },
+      { "id": "ekon", "slug": "ekon", "status": "published", "data": { "title": "Ekon", "source_url": "/img/IMG_2969.jpg", "alt": "Ekon", "caption": "repair ekon", "date": "14/07/2025", "sort_order": 7 } },
+      { "id": "badminton", "slug": "badminton", "status": "published", "data": { "title": "Badminton", "source_url": "/img/IMG_2922.jpg", "alt": "Badminton", "caption": "badminton", "sort_order": 8 } },
+      { "id": "sky-full-of-stars", "slug": "sky-full-of-stars", "status": "published", "data": { "title": "Sky Full of Stars", "source_url": "/img/2DE2D047-B4A8-468D-A0B3-B5554AD3359D_1_102_o.jpeg", "alt": "Sky Full of Stars", "caption": "A Sky Full of Stars", "sort_order": 9 } },
+      { "id": "color", "slug": "color", "status": "published", "data": { "title": "Color", "source_url": "/img/2403_0214.jpeg", "alt": "Color", "caption": "color", "date": "03/02/2024", "sort_order": 10 } },
+      { "id": "img-1065", "slug": "img-1065", "status": "published", "data": { "title": "IMG 1065", "source_url": "/img/IMG_1065.jpg", "alt": "IMG 1065", "date": "14/10/2023", "sort_order": 11 } },
+      { "id": "visual", "slug": "visual", "status": "published", "data": { "title": "Visual", "source_url": "/img/Visual.png", "alt": "Visual", "sort_order": 12 } },
+      { "id": "kl", "slug": "kl", "status": "published", "data": { "title": "KL", "source_url": "/img/kl.jpg", "alt": "KL", "sort_order": 13 } },
+      { "id": "teh-tarik", "slug": "teh-tarik", "status": "published", "data": { "title": "Teh Tarik", "source_url": "https://travelfoodatlas.com/wp-content/uploads/2022/04/Teh-Tarik-540x720.jpg", "alt": "Teh Tarik", "sort_order": 14 } },
+      { "id": "dope", "slug": "dope", "status": "published", "data": { "title": "Dope", "source_url": "/img/pexels-photo-11997065.jpg", "alt": "Dope", "caption": "Dope", "sort_order": 15 } }
+    ]
+  }
+}
