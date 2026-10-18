@@ -4,7 +4,7 @@ An Astro + EmDash theme for the minimal `tehtarik` photo journal. It preserves t
 
 ## What is in the migration
 
-- The 15 Jekyll photo records are represented as the `photos` EmDash collection in `seed/seed.json`.
+- The 15 Jekyll photo records are represented as the `photos` EmDash collection in `seed/seed.json`. The public feed uses the same records as a read-only fallback until initial CMS setup is complete, so no original content disappears during setup.
 - The original local images are retained under `public/img/` as a safe first-deploy fallback. The remote Teh Tarik image is retained as its original URL.
 - New photography belongs in the EmDash Media Library: assign it to **High-resolution image** in a Photo entry. On Cloudflare, the `Image` component uses the private R2 binding and Cloudflare image transformations for responsive variants.
 - `source_url` is deliberately kept only to render the migrated legacy records before those originals are uploaded to the Media Library. It can be cleared per record after import.

@@ -1,5 +1,6 @@
 ---
 import { getEmDashCollection } from "emdash";
+import seed from "../../seed/seed.json";
 import PhotoFeed from "../components/PhotoFeed.astro";
 import Base from "../layouts/Base.astro";
 
@@ -9,19 +10,14 @@ const { entries: photos, cacheHint } = await getEmDashCollection("photos", {
   orderBy: { sort_order: "asc" },
 });
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+// The public journal remains complete before its first CMS setup. Once the
+// setup wizard imports this same seed, live EmDash records take precedence.
+const feedPhotos = photos.length
+  ? photos
+  : seed.content.photos.map((photo) => ({ data: photo.data, edit: {} }));
 ---
 
 <Base title="Tech Tarik" description="A personal photo journal">
-  {
-    photos.length ? (
-      <PhotoFeed photos={photos} />
-    ) : (
-      <p class="empty-state">No photos yet. <a href="/_emdash/admin/content/photos/new">Add the first photo</a>.</p>
-    )
-  }
+  <PhotoFeed photos={feedPhotos} />
 </Base>
-
-<style>
-  .empty-state { text-align: center; color: #6b7280; font-size: .8rem; }
-  .empty-state a { color: inherit; }
-</style>

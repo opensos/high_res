@@ -13,6 +13,7 @@ const { photos } = Astro.props;
 
   {
     photos.map((photo) => {
+      const edit = photo.edit ?? {};
       const image = photo.data.image;
       const source = photo.data.source_url;
       const alt = photo.data.alt || photo.data.title || "";
@@ -20,7 +21,7 @@ const { photos } = Astro.props;
       return (
         <template class="photo-template">
           <article class="photo" data-photo-item>
-            <div class:list={{ "photo-frame": true, banner: photo.data.is_banner }} {...photo.edit.image}>
+            <div class:list={{ "photo-frame": true, banner: photo.data.is_banner }} {...edit.image}>
               {image ? (
                 <Image image={image} />
               ) : source ? (
@@ -30,8 +31,8 @@ const { photos } = Astro.props;
             {
               hasMeta && (
                 <div class="photo-meta">
-                  {photo.data.date && <time {...photo.edit.date}>{photo.data.date}</time>}
-                  {photo.data.caption && <p {...photo.edit.caption}>{photo.data.caption}</p>}
+                  {photo.data.date && <time {...edit.date}>{photo.data.date}</time>}
+                  {photo.data.caption && <p {...edit.caption}>{photo.data.caption}</p>}
                 </div>
               )
             }
