@@ -54,9 +54,9 @@ const pageCtx = createPublicPageContext({
   * { box-sizing: border-box; }
   html { min-width: 320px; }
   body { margin: 0; background: #fff; }
-  .site-shell { width: min(100%, 1280px); margin: 0 auto; padding: 1.5rem 1rem 3rem; }
-  .masthead { padding: 0 0 2.5rem; text-align: center; font-size: .75rem; letter-spacing: .01em; }
+  .site-shell { width: 100%; margin: 0; padding: 1.5rem 0 3rem; }
+  .masthead { padding: 0 1rem 2.5rem; text-align: center; font-size: .75rem; letter-spacing: .01em; }
   .masthead a { color: #6b7280; text-decoration: none; }
   .masthead a:hover, .masthead a:focus-visible { color: #111827; text-decoration: underline; text-underline-offset: .2em; }
-  @media (min-width: 720px) { .site-shell { padding-inline: 2rem; } .masthead { padding-bottom: 3.5rem; } }
+  @media (min-width: 720px) { .masthead { padding-bottom: 3.5rem; } }
 </style>

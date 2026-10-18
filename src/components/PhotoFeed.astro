@@ -93,8 +93,10 @@ const { photos } = Astro.props;
   .photo { opacity: 0; transform: translateY(14px); transition: opacity .45s ease, transform .45s ease; }
   .photo.is-visible { opacity: 1; transform: translateY(0); }
   .photo-frame { display: flex; justify-content: center; }
-  .photo-frame :global(img) { display: block; width: auto; max-width: 100%; height: auto; max-height: 90svh; object-fit: contain; }
-  .photo-frame.banner :global(img) { width: min(100%, 720px); }
+  /* Keep each original file at its natural display size, capped only by the viewport.
+     This deliberately matches the legacy journal rather than shrinking portraits to
+     fit within one screen height. */
+  .photo-frame :global(img) { display: block; width: auto; max-width: 100%; height: auto; }
   .photo-meta { display: grid; justify-items: center; gap: .3rem; margin-top: .7rem; text-align: center; font-size: .7rem; line-height: 1.35; }
   .photo-meta time { color: #9ca3af; }
   .photo-meta p { margin: 0; color: #6b7280; }
