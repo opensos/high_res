@@ -4,6 +4,15 @@
   "main": "./src/worker.ts",
   "compatibility_date": "2026-10-18",
   "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "EMDASH_SITE_URL": "https://highres.tehtarik.net"
+  },
+  "routes": [
+    {
+      "pattern": "highres.tehtarik.net",
+      "custom_domain": true
+    }
+  ],
   "d1_databases": [
     {
       "binding": "DB",
